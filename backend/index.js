@@ -13,8 +13,6 @@ mongoose
     console.log("MongoDb is connected!");
 }).catch((e) => console.log(e));
 
-app.post("/pins")
-
 app.listen(8800, () => {
     console.log("Backend server is running!");
 });
