@@ -1,0 +1,41 @@
+/*
+ CARD STYLES
+*/
+
+.card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding: 0.5em;
+    width: 250px;
+    height: 300px;
+}
+
+label {
+    width: max-content;
+    font-size: 13px;
+    color: #88a2f6;
+    border-bottom: 0.5px solid #88a2f6;
+    margin: 3px 0;
+}
+
+.place {
+    font-size: 17px;
+    font-weight: 800;
+}
+.desc {
+    font-size: 14px;
+}
+  
+.star {
+    color: gold;
+}
+  
+.username {
+    font-size: 14px;
+}
+  
+.date {
+    font-size: 11px;
+}
+  
