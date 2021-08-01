@@ -1,13 +1,14 @@
-import { useState } from 'react';
-import ReactMapGL from 'react-map-gl';
+import React, { useState } from 'react';
+import ReactMapGL, { Marker } from 'react-map-gl';
+import { Room } from '@material-ui/icons';
 
 function App() {
   const [viewport, setViewport] = useState({
-    width: 400,
-    height: 400,
-    latitude: 37.7577,
-    longitude: -122.4376,
-    zoom: 8
+    width: "100vw",
+    height: "100vh",
+    latitude: 48,
+    longitude: 10,
+    zoom: 4
   });
 
   return (
@@ -15,7 +16,20 @@ function App() {
     {...viewport}
     mapboxApiAccessToken={process.env.REACT_APP_MAPBOX}
     onViewportChange={nextViewport => setViewport(nextViewport)}
-    />
+    mapStyle="mapbox://styles/rocknsoph/ckrtnkv1c8qlk19o1d6j01kkx"
+    >
+      <Marker
+      latitude={43.6333}
+      longitude={5.1}
+      >
+        <Room 
+        style={{
+          fontSize: viewport.zoom * 7,
+          color: "#FF3864",
+        }}
+        />
+      </Marker>
+    </ReactMapGL>
   );
 }
 
