@@ -7,6 +7,7 @@ import { format } from "timeago.js";
 import "./app.css";
 
 function App() {
+  const currentUser = "Elsa";
   const [pins, setPins] = useState([]);
   const [currentPlaceId, setCurrentPlaceId] = useState(null);
   const [viewport, setViewport] = useState({
@@ -43,11 +44,17 @@ function App() {
     >
       {pins.map((p) => (
         <>
-          <Marker latitude={p.lat} longitude={p.long}>
+          <Marker 
+            latitude={p.lat}
+            longitude={p.long}
+            offsetLeft={-10}
+            offsetTop={-10}
+          >
             <Room
               style={{
                 fontSize: viewport.zoom * 7,
-                color: "#FF3864",
+                color: currentUser === p.username ? "#F688D9" : "#88F6A6",
+                cursor: "pointer",
               }}
               onClick={() => handleMarkerClick(p._id, p.lat, p.long)}
             />
