@@ -67,7 +67,7 @@ select:focus {
 
 textarea {
   border: none;
-  border-bottom: 1px solid gray;
+  border-bottom: 1px solid rgb(153, 149, 149);
 }
 
 .submitButton {
@@ -97,4 +97,17 @@ textarea {
 
 .button:focus {
   outline: none;
+}
+
+.logout {
+  background-color: #993300;
+}
+
+.login {
+  background-color: #567af2;
+  margin-right: 10px;
+}
+
+.register {
+  background-color: #009a9b;
 }
