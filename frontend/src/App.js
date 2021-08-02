@@ -52,6 +52,7 @@ function App() {
       onViewportChange={(nextViewport) => setViewport(nextViewport)}
       mapStyle="mapbox://styles/rocknsoph/ckrtnkv1c8qlk19o1d6j01kkx"
       onDblClick={handleAddClick}
+      transitionDuration="250"
     >
       {pins.map((p) => (
         <>
@@ -112,7 +113,28 @@ function App() {
             onClose={() => setNewPlace(null)}
             anchor="top"
           >
-            Test
+            <div>
+              <form>
+                <label>Title</label>
+                <input
+                  placeholder="Enter a title eg: Museum/City name"
+                  autoFocus
+                />
+                <label>Description</label>
+                <textarea placeholder="What do you think about this place?" />
+                <label>Rating</label>
+                <select>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                </select>
+                <button type="submit" className="submitButton">
+                  Add Pin
+                </button>
+              </form>
+            </div>
           </Popup>
         </>
       )}
