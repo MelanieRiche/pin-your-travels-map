@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ReactMapGL, { Marker, Popup } from 'react-map-gl';
 import { Room, Star } from '@material-ui/icons';
 import axios from "axios";
+import { format } from "timeago.js";
 
 import "./app.css"
 
@@ -71,7 +72,7 @@ function App() {
               </div>
               <label>Information</label>
               <span className="username">Created by <b>{p.username}</b></span>
-              <span className="date">3 hours ago</span>
+              <span className="date">{format(p.createdAt)}</span>
 
             </div>
             </Popup>
