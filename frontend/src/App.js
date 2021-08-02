@@ -11,6 +11,9 @@ function App() {
   const [pins, setPins] = useState([]);
   const [currentPlaceId, setCurrentPlaceId] = useState(null);
   const [newPlace, setNewPlace] = useState(null);
+  const [title, setTitle] = useState(null);
+  const [desc, setDesc] = useState(null);
+  const [star, setStar] = useState(0);
   const [viewport, setViewport] = useState({
     width: "100vw",
     height: "100vh",
@@ -43,6 +46,27 @@ function App() {
       lat: latitude,
       long: longitude,
     });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const newPin = {
+      username: currentUser,
+      title,
+      desc,
+      rating: star,
+      lat: newPlace.lat,
+      long: newPlace.long,
+    };
+
+    try {
+      const res = await axios.post("/pins", newPin);
+      setPins([...pins, res.data]);
+      // Close form
+      setNewPlace(null);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -87,11 +111,7 @@ function App() {
                 <p className="desc">{p.desc}</p>
                 <label>Rating</label>
                 <div className="stars">
-                  <Star className="star" />
-                  <Star className="star" />
-                  <Star className="star" />
-                  <Star className="star" />
-                  <Star className="star" />
+                  {Array(p.rating).fill(<Star className="star" />)}
                 </div>
                 <label>Information</label>
                 <span className="username">
@@ -114,16 +134,20 @@ function App() {
             anchor="top"
           >
             <div>
-              <form>
+              <form onSubmit={handleSubmit}>
                 <label>Title</label>
                 <input
                   placeholder="Enter a title eg: Museum/City name"
                   autoFocus
+                  onChange={(e) => setTitle(e.target.value)}
                 />
                 <label>Description</label>
-                <textarea placeholder="What do you think about this place?" />
+                <textarea
+                  placeholder="What do you think about this place?"
+                  onChange={(e) => setDesc(e.target.value)}
+                />
                 <label>Rating</label>
-                <select>
+                <select onChange={(e) => setStar(e.target.value)}>
                   <option value="1">1</option>
                   <option value="2">2</option>
                   <option value="3">3</option>
