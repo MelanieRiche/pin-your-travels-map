@@ -10,6 +10,7 @@ function App() {
   const currentUser = "Elsa";
   const [pins, setPins] = useState([]);
   const [currentPlaceId, setCurrentPlaceId] = useState(null);
+  const [newPlace, setNewPlace] = useState(null);
   const [viewport, setViewport] = useState({
     width: "100vw",
     height: "100vh",
@@ -35,16 +36,26 @@ function App() {
     setViewport({ ...viewport, latitude: lat, longitude: long });
   };
 
+  const handleAddClick = (e) => {
+    console.log(e);
+    const [longitude, latitude] = e.lngLat;
+    setNewPlace({
+      lat: latitude,
+      long: longitude,
+    });
+  };
+
   return (
     <ReactMapGL
       {...viewport}
       mapboxApiAccessToken={process.env.REACT_APP_MAPBOX}
       onViewportChange={(nextViewport) => setViewport(nextViewport)}
       mapStyle="mapbox://styles/rocknsoph/ckrtnkv1c8qlk19o1d6j01kkx"
+      onDblClick={handleAddClick}
     >
       {pins.map((p) => (
         <>
-          <Marker 
+          <Marker
             latitude={p.lat}
             longitude={p.long}
             offsetLeft={-10}
@@ -91,6 +102,20 @@ function App() {
           )}
         </>
       ))}
+      {newPlace && (
+        <>
+          <Popup
+            latitude={newPlace.lat}
+            longitude={newPlace.long}
+            closeButton={true}
+            closeOnClick={false}
+            onClose={() => setNewPlace(null)}
+            anchor="top"
+          >
+            Test
+          </Popup>
+        </>
+      )}
     </ReactMapGL>
   );
 }
