@@ -7,7 +7,7 @@ import { format } from "timeago.js";
 import "./app.css";
 
 function App() {
-  const currentUser = "Elsa";
+  const currentUser = "Clément";
   const [pins, setPins] = useState([]);
   const [currentPlaceId, setCurrentPlaceId] = useState(null);
   const [newPlace, setNewPlace] = useState(null);
@@ -83,12 +83,12 @@ function App() {
           <Marker
             latitude={p.lat}
             longitude={p.long}
-            offsetLeft={-10}
-            offsetTop={-10}
+            offsetLeft={-3.5 * viewport.zoom}
+            offsetTop={-7 * viewport.zoom}
           >
             <Room
               style={{
-                fontSize: viewport.zoom * 7,
+                fontSize: 7 * viewport.zoom,
                 color: currentUser === p.username ? "#F688D9" : "#88F6A6",
                 cursor: "pointer",
               }}
