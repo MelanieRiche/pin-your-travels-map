@@ -42,7 +42,7 @@ export default function Login({ setShowLogin, setCurrentUser, myStorage }) {
         <button className="loginBtn" type="submit">
           Login
         </button>
-        <span className="failure">Something went wrong!</span>
+        {error && <span className="failure">Something went wrong!</span>}
       </form>
       <Cancel
         className="loginCancel"

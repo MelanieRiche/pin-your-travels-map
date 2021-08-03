@@ -44,7 +44,7 @@ export default function Register({ setShowRegister }) {
           ref={passwordRef}
         />
         <button className="loginBtn" type="submit">
-          Login
+          Register
         </button>
         {success && (
           <span className="success">Successfull. You can login now!</span>

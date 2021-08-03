@@ -74,6 +74,11 @@ function App() {
     }
   };
 
+  const handleLogout = () => {
+    setCurrentUser(null);
+    myStorage.removeItem("user");
+  };
+
   return (
     <div style={{ height: "100vh", width: "100%" }}>
       <ReactMapGL
@@ -169,7 +174,9 @@ function App() {
           </>
         )}
         {currentUser ? (
-          <button className="button logout">Log out</button>
+          <button className="button logout" onClick={handleLogout}>
+            Log out
+          </button>
         ) : (
           <div className="buttons">
             <button className="button login" onClick={() => setShowLogin(true)}>
