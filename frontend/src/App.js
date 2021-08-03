@@ -9,6 +9,7 @@ import Login from "./Login";
 import "./app.css";
 
 function App() {
+  const myStorage = window.localStorage;
   const [currentUser, setCurrentUser] = useState(null);
   const [pins, setPins] = useState([]);
   const [currentPlaceId, setCurrentPlaceId] = useState(null);
@@ -74,116 +75,124 @@ function App() {
   };
 
   return (
-    <ReactMapGL
-      {...viewport}
-      mapboxApiAccessToken={process.env.REACT_APP_MAPBOX}
-      onViewportChange={(nextViewport) => setViewport(nextViewport)}
-      mapStyle="mapbox://styles/rocknsoph/ckrtnkv1c8qlk19o1d6j01kkx"
-      onDblClick={handleAddClick}
-      transitionDuration="250"
-    >
-      {pins.map((p) => (
-        <>
-          <Marker
-            latitude={p.lat}
-            longitude={p.long}
-            offsetLeft={-3.5 * viewport.zoom}
-            offsetTop={-7 * viewport.zoom}
-          >
-            <Room
-              style={{
-                fontSize: 7 * viewport.zoom,
-                color: currentUser === p.username ? "#F688D9" : "#88F6A6",
-                cursor: "pointer",
-              }}
-              onClick={() => handleMarkerClick(p._id, p.lat, p.long)}
-            />
-          </Marker>
-          {p._id === currentPlaceId && (
-            <Popup
+    <div style={{ height: "100vh", width: "100%" }}>
+      <ReactMapGL
+        {...viewport}
+        mapboxApiAccessToken={process.env.REACT_APP_MAPBOX}
+        onViewportChange={(nextViewport) => setViewport(nextViewport)}
+        mapStyle="mapbox://styles/rocknsoph/ckrtnkv1c8qlk19o1d6j01kkx"
+        onDblClick={handleAddClick}
+        transitionDuration="250"
+      >
+        {pins.map((p) => (
+          <>
+            <Marker
               latitude={p.lat}
               longitude={p.long}
+              offsetLeft={-3.5 * viewport.zoom}
+              offsetTop={-7 * viewport.zoom}
+            >
+              <Room
+                style={{
+                  fontSize: 7 * viewport.zoom,
+                  color: currentUser === p.username ? "#F688D9" : "#88F6A6",
+                  cursor: "pointer",
+                }}
+                onClick={() => handleMarkerClick(p._id, p.lat, p.long)}
+              />
+            </Marker>
+            {p._id === currentPlaceId && (
+              <Popup
+                latitude={p.lat}
+                longitude={p.long}
+                closeButton={true}
+                closeOnClick={false}
+                onClose={() => setCurrentPlaceId(null)}
+                anchor="bottom"
+              >
+                <div className="card">
+                  <label>Place</label>
+                  <h4 className="place">{p.title}</h4>
+                  <label>Review</label>
+                  <p className="desc">{p.desc}</p>
+                  <label>Rating</label>
+                  <div className="stars">
+                    {Array(p.rating).fill(<Star className="star" />)}
+                  </div>
+                  <label>Information</label>
+                  <span className="username">
+                    Created by <b>{p.username}</b>
+                  </span>
+                  <span className="date">{format(p.createdAt)}</span>
+                </div>
+              </Popup>
+            )}
+          </>
+        ))}
+        {newPlace && (
+          <>
+            <Popup
+              latitude={newPlace.lat}
+              longitude={newPlace.long}
               closeButton={true}
               closeOnClick={false}
-              onClose={() => setCurrentPlaceId(null)}
-              anchor="bottom"
+              onClose={() => setNewPlace(null)}
+              anchor="top"
             >
-              <div className="card">
-                <label>Place</label>
-                <h4 className="place">{p.title}</h4>
-                <label>Review</label>
-                <p className="desc">{p.desc}</p>
-                <label>Rating</label>
-                <div className="stars">
-                  {Array(p.rating).fill(<Star className="star" />)}
-                </div>
-                <label>Information</label>
-                <span className="username">
-                  Created by <b>{p.username}</b>
-                </span>
-                <span className="date">{format(p.createdAt)}</span>
+              <div>
+                <form onSubmit={handleSubmit}>
+                  <label>Title</label>
+                  <input
+                    placeholder="Enter a title eg: Museum/City name"
+                    autoFocus
+                    onChange={(e) => setTitle(e.target.value)}
+                  />
+                  <label>Description</label>
+                  <textarea
+                    placeholder="What do you think about this place?"
+                    onChange={(e) => setDesc(e.target.value)}
+                  />
+                  <label>Rating</label>
+                  <select onChange={(e) => setStar(e.target.value)}>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                  </select>
+                  <button type="submit" className="submitButton">
+                    Add Pin
+                  </button>
+                </form>
               </div>
             </Popup>
-          )}
-        </>
-      ))}
-      {newPlace && (
-        <>
-          <Popup
-            latitude={newPlace.lat}
-            longitude={newPlace.long}
-            closeButton={true}
-            closeOnClick={false}
-            onClose={() => setNewPlace(null)}
-            anchor="top"
-          >
-            <div>
-              <form onSubmit={handleSubmit}>
-                <label>Title</label>
-                <input
-                  placeholder="Enter a title eg: Museum/City name"
-                  autoFocus
-                  onChange={(e) => setTitle(e.target.value)}
-                />
-                <label>Description</label>
-                <textarea
-                  placeholder="What do you think about this place?"
-                  onChange={(e) => setDesc(e.target.value)}
-                />
-                <label>Rating</label>
-                <select onChange={(e) => setStar(e.target.value)}>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                  <option value="5">5</option>
-                </select>
-                <button type="submit" className="submitButton">
-                  Add Pin
-                </button>
-              </form>
-            </div>
-          </Popup>
-        </>
-      )}
-      {currentUser ? (
-        <button className="button logout">Log out</button>
-      ) : (
-        <div className="buttons">
-          <button className="button login" onClick={() => setShowLogin(true)}>
-            Log in
-          </button>
-          <button
-            className="button register"
-            onClick={() => setShowRegister(true)}
-          >
-            Register
-          </button>
-        </div>
-      )}
-      {showRegister && <Register setShowRegister={setShowRegister} />}
-      {showLogin && <Login setShowLogin={setShowLogin} />}
-    </ReactMapGL>
+          </>
+        )}
+        {currentUser ? (
+          <button className="button logout">Log out</button>
+        ) : (
+          <div className="buttons">
+            <button className="button login" onClick={() => setShowLogin(true)}>
+              Log in
+            </button>
+            <button
+              className="button register"
+              onClick={() => setShowRegister(true)}
+            >
+              Register
+            </button>
+          </div>
+        )}
+        {showRegister && <Register setShowRegister={setShowRegister} />}
+        {showLogin && (
+          <Login
+            setShowLogin={setShowLogin}
+            setCurrentUser={setCurrentUser}
+            myStorage={myStorage}
+          />
+        )}
+      </ReactMapGL>
+    </div>
   );
 }
 
