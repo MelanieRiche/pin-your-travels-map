@@ -23,6 +23,8 @@ function App() {
     longitude: 10,
     zoom: 4,
   });
+  const [showRegister, setShowRegister] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
 
   useEffect(() => {
     const getPins = async () => {
@@ -168,10 +170,19 @@ function App() {
         <button className="button logout">Log out</button>
       ) : (
         <div className="buttons">
-          <button className="button login">Log in</button>
-          <button className="button register">Register</button>
+          <button className="button login" onClick={() => setShowLogin(true)}>
+            Log in
+          </button>
+          <button
+            className="button register"
+            onClick={() => setShowRegister(true)}
+          >
+            Register
+          </button>
         </div>
       )}
+      {showRegister && <Register setShowRegister={setShowRegister} />}
+      {showLogin && <Login setShowLogin={setShowLogin} />}
     </ReactMapGL>
   );
 }

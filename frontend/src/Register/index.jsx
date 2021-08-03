@@ -3,8 +3,30 @@ import axios from "axios";
 import { useRef, useState } from "react";
 import "./style.css";
 
-export default function Register() {
+export default function Register({ setShowRegister }) {
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(false);
 
+  const usernameRef = useRef();
+  const emailRef = useRef();
+  const passwordRef = useRef();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const newUser = {
+      username: usernameRef.current.value,
+      email: emailRef.current.value,
+      password: passwordRef.current.value,
+    };
+
+    try {
+      await axios.post("/users/register", newUser);
+      setError(false);
+      setSuccess(true);
+    } catch (err) {
+      setError(true);
+    }
+  };
 
   return (
     <div className="registerContainer">
@@ -12,20 +34,27 @@ export default function Register() {
         <Room className="logoIcon" />
         <span>LogoName</span>
       </div>
-      <form>
-        <input autoFocus placeholder="username" />
+      <form onSubmit={handleSubmit}>
+        <input autoFocus placeholder="username" ref={usernameRef} />
+        <input type="email" placeholder="email" ref={emailRef} />
         <input
           type="password"
           min="6"
           placeholder="password"
+          ref={passwordRef}
         />
         <button className="loginBtn" type="submit">
           Login
         </button>
-        <span className="success">Successfull. You can login now!</span>
-        <span className="failure">Something went wrong!</span>
+        {success && (
+          <span className="success">Successfull. You can login now!</span>
+        )}
+        {error && <span className="failure">Something went wrong!</span>}
       </form>
-      <Cancel className="loginCancel" />
+      <Cancel
+        className="registerCancel"
+        onClick={() => setShowRegister(false)}
+      />
     </div>
   );
-};
+}
